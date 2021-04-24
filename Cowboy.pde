@@ -7,10 +7,6 @@ int ny = h/sprite_size; // 16 Wievile Kacheln liegen übereinander 16
 PImage map;
 PC pc;
 Levels levels;
-int GO_DOWN=0;
-int GO_RIGHT=1;
-int GO_LEFT=2;
-int GO_UP=3;
 int animation_counter=0;
 
 
@@ -34,7 +30,7 @@ void draw() {
       
     }
     else if(keyCode == UP){ 
-     pc.go_upp();
+     pc.go_up();
     }
      
      else if(keyCode == LEFT){ 
