@@ -3,12 +3,14 @@ class PC {
   int x;
   int y;
   PImage[][] animation=new PImage[8][4];
-  final static int STAND=0;
-  final static int GO=1;
+  final static int GO=0;
+  final static int STAND=1;
   final static int GO_DOWN=0;
   final static int GO_RIGHT=1;
   final static int GO_LEFT=2;
   final static int GO_UP=3;
+  final static int ANIMATION_STEPS = 4;
+  final static int SPEED = 10;
 
   int facing=GO_RIGHT;
   int action=STAND;
@@ -26,33 +28,62 @@ class PC {
   }
   
   public void go_down(){
-    y += 1;
-    facing = GO_DOWN;  
+    if (action == STAND){
+      action = GO;
+      y += 1;
+      facing = GO_DOWN;
+    }
    }
    public void go_up(){
-      y -= 1;
-      facing = GO_UP;
+     if (action == STAND){
+        action = GO;
+        y -= 1;
+        facing = GO_UP;
+     }
    }
    
    public void go_left(){
-      x -= 1;
-      facing = GO_LEFT;
+     if (action == STAND){
+        action = GO;
+        x -= 1;
+        facing = GO_LEFT;
+     }
    }
     
    public void go_right(){
-     //if (initiate_go()){
+     if (action == STAND){
+        action = GO;
         x += 1;
         facing = GO_RIGHT;
-      //}
-  }
-  /*private boolean initiate_go() {
-     if (animation_counter == 0) {
-       action = GO;
-       return true;
      }
-     return false;
-  }*/
+  }
+  
   public void show() {
-    image(animation[action*4+facing][0], x*sprite_size, y*sprite_size-sprite_size);    
+    int x = this.x*sprite_size;
+    int y = this.y*sprite_size-sprite_size;
+    int animation_step = animation_counter / SPEED;
+    
+    if (action == GO) {
+     int displacement = sprite_size - (sprite_size / ANIMATION_STEPS * animation_step);
+     if (facing == GO_RIGHT){
+       x -= displacement;
+     }
+     else if (facing == GO_LEFT) {
+       x += displacement;
+     }
+     else if (facing == GO_UP) {
+       y += displacement;
+     }
+     else {
+       y -= displacement;
+     }
+    }
+    image(animation[action*4+facing][animation_step], x, y);    
+    
+    animation_counter++;
+    if (animation_counter == ANIMATION_STEPS * SPEED) {
+      animation_counter = 0;
+      action = STAND;
+    }
   }
 }
